@@ -8,7 +8,7 @@ import fs from "fs"; // ES6 - Padrão atual
 import { v4 as uuid } from "uuid";
 const DB_FILE_PATH = "./core/db";
 
-console.log("[CRUD]");
+//  
 
 type UUID = string;
 
@@ -44,7 +44,7 @@ function create(content: string): Todo {
   return todo;
 }
 
-function read(): Array<Todo> {
+export function read(): Array<Todo> {
 const dbString = fs.readFileSync(DB_FILE_PATH, "utf-8");
 const db = JSON.parse(dbString || "{}");
 if (!db.todos) {
@@ -118,18 +118,18 @@ fs.writeFileSync(DB_FILE_PATH, "");
 }
 
 // [Simulation]
-CLEAR_DB();
-create("Primeira TODO!");
-const secondTodo = create("Segunda TODO!");
-deleteById(secondTodo.id);
-const thirdTodo = create("Terceira TODO!");
-// Provavelmte você vera mais uma alteração especifica do que essa abaixo
-// update(thirdTodo.id, {
-//   content: "Conteudo da terceira todo alterada",
-//   done: true,
-// });
-// Função de alteração de contéudo mais especifica
-updateContentById(thirdTodo.id, "Atualizado");
-const todos = read();
-console.log(todos);
-console.log(todos.length);
+// CLEAR_DB();
+// create("Primeira TODO!");
+// const secondTodo = create("Segunda TODO!");
+// deleteById(secondTodo.id);
+// const thirdTodo = create("Terceira TODO!");
+// // Provavelmte você vera mais uma alteração especifica do que essa abaixo
+// // update(thirdTodo.id, {
+// //   content: "Conteudo da terceira todo alterada",
+// //   done: true,
+// // });
+// // Função de alteração de contéudo mais especifica
+// updateContentById(thirdTodo.id, "Atualizado");
+// const todos = read();
+// console.log(todos);
+// console.log(todos.length);
