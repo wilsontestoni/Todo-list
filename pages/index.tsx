@@ -1,68 +1,78 @@
 import React from "react";
 import { GlobalStyles } from "@ui/theme/GlobalStyles";
+import { todoController } from "@ui/controller/todo";
 
 const bg = "https://mariosouto.com/cursos/crudcomqualidade/bg";
 
+interface HomeTodo {
+  id: string;
+  content: string;
+}
+
 export default function Page() {
+  const [page, setPage] = React.useState(1);
+  const [todos, setTodos] = React.useState<HomeTodo[]>([]);
+
+  React.useEffect(() => {
+    todoController.get().then(({ todos }) => {
+      setTodos(todos);
+    });
+  }, []);
+
   return (
-    <div>
-      <main>
-        <GlobalStyles themeName="coolGrey" />
-        <header
-          style={{
-            backgroundImage: `url('${bg}')`,
-          }}
-        >
-          <div className="typewriter">
-            <h1>O que fazer hoje?</h1>
-          </div>
-          <form>
-            <input type="text" placeholder="Correr, Estudar..." />
-            <button type="submit" aria-label="Adicionar novo item">
-              +
-            </button>
-          </form>
-        </header>
+    <main>
+      <GlobalStyles themeName="coolGrey" />
+      <header
+        style={{
+          backgroundImage: `url('${bg}')`,
+        }}
+      >
+        <div className="typewriter">
+          <h1>O que fazer hoje?</h1>
+        </div>
+        <form>
+          <input type="text" placeholder="Correr, Estudar..." />
+          <button type="submit" aria-label="Adicionar novo item">
+            +
+          </button>
+        </form>
+      </header>
 
-        <section>
-          <form>
-            <input
-              type="text"
-              placeholder="Filtrar lista atual, ex: Dentista"
-            />
-          </form>
+      <section>
+        <form>
+          <input type="text" placeholder="Filtrar lista atual, ex: Dentista" />
+        </form>
 
-          <table border={1}>
-            <thead>
-              <tr>
-                <th align="left">
-                  <input type="checkbox" disabled />
-                </th>
-                <th align="left">Id</th>
-                <th align="left">Conteúdo</th>
-                <th />
-              </tr>
-            </thead>
+        <table border={1}>
+          <thead>
+            <tr>
+              <th align="left">
+                <input type="checkbox" disabled />
+              </th>
+              <th align="left">Id</th>
+              <th align="left">Conteúdo</th>
+              <th />
+            </tr>
+          </thead>
 
-            <tbody>
-              <tr>
-                <td>
-                  <input type="checkbox" />
-                </td>
-                <td>d4f26</td>
-                <td>
-                  Conteúdo de uma TODO Lorem ipsum dolor sit amet consectetur
-                  adipisicing elit. Eaque vero facilis obcaecati, autem aliquid
-                  eius! Consequatur eaque doloribus laudantium soluta optio
-                  odit, provident, ab voluptates doloremque voluptas recusandae
-                  aspernatur aperiam.
-                </td>
-                <td align="right">
-                  <button data-type="delete">Apagar</button>
-                </td>
-              </tr>
+          <tbody>
+            {todos.map((todo) => {
+              return (
+                <tr key={todo.id}>
+                  <td>
+                    <input type="checkbox" />
+                  </td>
+                  <td>{todo.id.substring(0, 4)}</td>
+                  <td>{todo.content}</td>
+                  <td align="right">
+                    <button data-type="delete">Apagar</button>
+                  </td>
+                </tr>
+              );
+            })}
 
-              <tr>
+            {
+              /* <tr>
                 <td colSpan={4} align="center" style={{ textAlign: "center" }}>
                   Carregando...
                 </td>
@@ -72,12 +82,17 @@ export default function Page() {
                 <td colSpan={4} align="center">
                   Nenhum item encontrado
                 </td>
-              </tr>
+              </tr>*/
 
               <tr>
                 <td colSpan={4} align="center" style={{ textAlign: "center" }}>
-                  <button data-type="load-more">
-                    Carregar mais{" "}
+                  <button
+                    data-type="load-more"
+                    onClick={() => {
+                      setPage(page + 1);
+                    }}
+                  >
+                    Página {page} Carregar mais{" "}
                     <span
                       style={{
                         display: "inline-block",
@@ -88,10 +103,10 @@ export default function Page() {
                   </button>
                 </td>
               </tr>
-            </tbody>
-          </table>
-        </section>
-      </main>
-    </div>
+            }
+          </tbody>
+        </table>
+      </section>
+    </main>
   );
 }

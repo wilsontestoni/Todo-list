@@ -8,6 +8,6 @@ function get(_: NextApiRequest, res: NextApiResponse) {
   });
 }
 
-export const todo = {
+export const todoController = {
   get,
 };
