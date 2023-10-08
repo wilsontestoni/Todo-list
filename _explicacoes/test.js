@@ -1,7 +1,7 @@
 // Praticar com o QuokkaJS
 // Algoritmo de Paginação
-const page = 1;
-const limit = 10;
+const page = 2;
+const limit = 3;
 const ALL_TODOS = [
   {
     content: "Primeira TODO",
@@ -25,3 +25,5 @@ const totalPages = Math.ceil(ALL_TODOS.length / limit);
 console.log(startIndex);
 console.log(endIndex)
 console.log(paginatedTodos)
+console.log(ALL_TODOS.length)
+console.log(totalPages);
