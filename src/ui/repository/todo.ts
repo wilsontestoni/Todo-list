@@ -1,42 +1,36 @@
-interface todoRepositoryGetParams {
+interface TodoRepositoryGetParams {
   page: number;
   limit: number;
 }
-
-interface todoRepositoryGetOutput {
+interface TodoRepositoryGetOutput {
   todos: Todo[];
   total: number;
   pages: number;
 }
-
 function get({
   page,
   limit,
-}: todoRepositoryGetParams): Promise<todoRepositoryGetOutput> {
-  return fetch("/api/todos").then(async (todoss) => {
-    const todosEmString = await todoss.text();
-    const todosFromServer = parseTodosFromServer(
-      JSON.parse(todosEmString)
-    ).todos;
+}: TodoRepositoryGetParams): Promise<TodoRepositoryGetOutput> {
+  return fetch(`/api/todos?page=${page}&limit=${limit}`).then(
+    async (respostaDoServidor) => {
+      const todosString = await respostaDoServidor.text();
+      // Como garantir a tipagem de tipos desconhecidos?
+      const responseParsed = parseTodosFromServer(JSON.parse(todosString));
 
-    const ALL_TODOS = todosFromServer;
-    const startIndex = (page - 1) * limit;
-    const endIndex = page * limit;
-    const paginatedTodos = ALL_TODOS.slice(startIndex, endIndex);
-    const totalPages = Math.ceil(ALL_TODOS.length / limit);
-
-    return {
-      todos: paginatedTodos,
-      total: ALL_TODOS.length,
-      pages: totalPages,
-    };
-  });
+      return {
+        total: responseParsed.total,
+        todos: responseParsed.todos,
+        pages: responseParsed.pages,
+      };
+    }
+  );
 }
 
 export const todoRepository = {
   get,
 };
 
+// Model/Schema
 interface Todo {
   id: string;
   content: string;
@@ -44,22 +38,28 @@ interface Todo {
   done: boolean;
 }
 
-function parseTodosFromServer(responseBody: unknown): { todos: Array<Todo> } {
-  // console.log(responseBody);
-
+function parseTodosFromServer(responseBody: unknown): {
+  total: number;
+  pages: number;
+  todos: Array<Todo>;
+} {
   if (
     responseBody !== null &&
     typeof responseBody === "object" &&
     "todos" in responseBody &&
+    "total" in responseBody &&
+    "pages" in responseBody &&
     Array.isArray(responseBody.todos)
   ) {
     return {
+      total: Number(responseBody.total),
+      pages: Number(responseBody.pages),
       todos: responseBody.todos.map((todo: unknown) => {
-        if (todo === null && todo !== "object") {
+        if (todo === null && typeof todo !== "object") {
           throw new Error("Invalid todo from API");
         }
 
-        const { id, content, date, done } = todo as {
+        const { id, content, done, date } = todo as {
           id: string;
           content: string;
           date: string;
@@ -77,6 +77,8 @@ function parseTodosFromServer(responseBody: unknown): { todos: Array<Todo> } {
   }
 
   return {
+    pages: 1,
+    total: 0,
     todos: [],
   };
 }
