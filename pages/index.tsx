@@ -10,14 +10,20 @@ interface HomeTodo {
 }
 
 export default function Page() {
+  const [totalPages, setTotalPages] = React.useState(0);
   const [page, setPage] = React.useState(1);
   const [todos, setTodos] = React.useState<HomeTodo[]>([]);
 
+  const hasMorePages = totalPages > page;
+
   React.useEffect(() => {
-    todoController.get().then(({ todos }) => {
-      setTodos(todos);
+    todoController.get({ page }).then(({ todos, pages }) => {
+      setTodos((oldTodos) => {
+        return [...oldTodos, ...todos];
+      });
+      setTotalPages(pages);
     });
-  }, []);
+  }, [page]);
 
   return (
     <main>
@@ -71,8 +77,7 @@ export default function Page() {
               );
             })}
 
-            {
-              /* <tr>
+            {/* <tr>
                 <td colSpan={4} align="center" style={{ textAlign: "center" }}>
                   Carregando...
                 </td>
@@ -82,8 +87,9 @@ export default function Page() {
                 <td colSpan={4} align="center">
                   Nenhum item encontrado
                 </td>
-              </tr>*/
+              </tr>*/}
 
+            {hasMorePages && (
               <tr>
                 <td colSpan={4} align="center" style={{ textAlign: "center" }}>
                   <button
@@ -99,11 +105,13 @@ export default function Page() {
                         marginLeft: "4px",
                         fontSize: "1.2em",
                       }}
-                    ></span>
+                    >
+                      ↓
+                    </span>
                   </button>
                 </td>
               </tr>
-            }
+            )}
           </tbody>
         </table>
       </section>

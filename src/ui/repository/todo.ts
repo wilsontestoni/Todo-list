@@ -45,7 +45,7 @@ interface Todo {
 }
 
 function parseTodosFromServer(responseBody: unknown): { todos: Array<Todo> } {
-  console.log(responseBody);
+  // console.log(responseBody);
 
   if (
     responseBody !== null &&
