@@ -1,7 +1,6 @@
-// Praticar com o QuokkaJS
 // Algoritmo de Paginação
 const page = 2;
-const limit = 3;
+const limit = 10;
 const ALL_TODOS = [
   {
     content: "Primeira TODO",
@@ -15,6 +14,29 @@ const ALL_TODOS = [
   {
     content: "Quarta!",
   },
+  {
+    content: "Quinta!",
+  },
+  {
+    content: "Sexta!",
+  },
+  {
+    content: "Setima!",
+  },
+  {
+    content: "Oitava!",
+  },
+  {
+    content: "Nona!",
+  },
+  {
+    content: "Decima!",
+  },
+
+  {
+    content: "Decima Primeira!",
+  },
+
 ];
 
 const startIndex = (page - 1) * limit;
