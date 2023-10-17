@@ -23,7 +23,7 @@ export default function Page() {
   );
   const hasNoTodos = homeTodos.length === 0 && !isLoading;
   const hasMorePages = totalPages > page;
- 
+
   React.useEffect(() => {
     // setInitialLoadComplete(true);
     if (!initialLoadComplete.current) {

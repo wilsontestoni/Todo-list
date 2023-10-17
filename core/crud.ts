@@ -19,7 +19,7 @@ interface Todo {
   done: boolean;
 }
 
-function create(content: string): Todo {
+export function create(content: string): Todo {
   //Precisamos salvar o content no sistema
   const todo: Todo = {
     id: uuid(),
