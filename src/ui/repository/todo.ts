@@ -1,3 +1,5 @@
+import { Todo } from "@ui/schema/todo";
+
 interface TodoRepositoryGetParams {
   page: number;
   limit: number;
@@ -31,12 +33,12 @@ export const todoRepository = {
 };
 
 // Model/Schema
-interface Todo {
-  id: string;
-  content: string;
-  date: Date;
-  done: boolean;
-}
+// interface Todo {
+//   id: string;
+//   content: string;
+//   date: Date;
+//   done: boolean;
+// }
 
 function parseTodosFromServer(responseBody: unknown): {
   total: number;
@@ -70,7 +72,7 @@ function parseTodosFromServer(responseBody: unknown): {
           id,
           content,
           done: String(done).toLowerCase() === "true",
-          date: new Date(date),
+          date: date,
         };
       }),
     };

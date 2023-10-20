@@ -1,4 +1,5 @@
 import { todoRepository } from "@ui/repository/todo";
+import { Todo } from "@ui/schema/todo";
 
 interface todoControllerGetParams {
   page: number;
@@ -24,7 +25,30 @@ function filterTodosByContent<Todo>(
   return homeTodos;
 }
 
+interface TodoControllerCreateParams {
+  content: string;
+  onError: () => void;
+  onSucess: (todo: Todo) => void;
+}
+function create({ content, onError, onSucess }: TodoControllerCreateParams) {
+  if (!content) {
+    onError();
+    return;
+  }
+
+  // Vai vir do repository
+  const todo = {
+    id: "12345",
+    content,
+    date: new Date().toISOString(),
+    done: false,
+  };
+
+  onSucess(todo);
+}
+
 export const todoController = {
   get,
   filterTodosByContent,
+  create,
 };
