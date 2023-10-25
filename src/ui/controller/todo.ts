@@ -1,21 +1,22 @@
 import { todoRepository } from "@ui/repository/todo";
 import { Todo } from "@ui/schema/todo";
+import { z as schema } from "zod";
 
-interface todoControllerGetParams {
+interface TodoControllerGetParams {
   page: number;
 }
-
-async function get(params: todoControllerGetParams) {
+async function get(params: TodoControllerGetParams) {
+  // Fazer a lógica de pegar os dados
   return todoRepository.get({
     page: params.page,
-    limit: 1,
+    limit: 2,
   });
 }
 
 function filterTodosByContent<Todo>(
   search: string,
   todos: Array<Todo & { content: string }>
-): Todo[] {
+): Array<Todo> {
   const homeTodos = todos.filter((todo) => {
     const searchNormalized = search.toLowerCase();
     const contentNormalized = todo.content.toLowerCase();
@@ -26,25 +27,26 @@ function filterTodosByContent<Todo>(
 }
 
 interface TodoControllerCreateParams {
-  content: string;
-  onError: () => void;
-  onSucess: (todo: Todo) => void;
+  content?: string;
+  onError: (customMessage?: string) => void;
+  onSuccess: (todo: Todo) => void;
 }
-function create({ content, onError, onSucess }: TodoControllerCreateParams) {
-  if (!content) {
+function create({ content, onSuccess, onError }: TodoControllerCreateParams) {
+  // Fail Fast
+  const parsedParams = schema.string().nonempty().safeParse(content);
+  if (!parsedParams.success) {
     onError();
     return;
   }
 
-  // Vai vir do repository
-  const todo = {
-    id: "12345",
-    content,
-    date: new Date().toISOString(),
-    done: false,
-  };
-
-  onSucess(todo);
+  todoRepository
+    .createByContent(parsedParams.data)
+    .then((newTodo) => {
+      onSuccess(newTodo);
+    })
+    .catch(() => {
+      onError();
+    });
 }
 
 export const todoController = {

@@ -15,7 +15,7 @@ function get({
 }: TodoRepositoryGetParams = {}): TodoRepositoryGetOutput {
   const currentPage = page || 1;
   const currentLimit = limit || 10;
-  const ALL_TODOS = read();
+  const ALL_TODOS = read().reverse();
 
   const startIndex = (currentPage - 1) * currentLimit;
   const endIndex = currentPage * currentLimit;
@@ -34,6 +34,7 @@ async function createByContent(content: string): Promise<Todo> {
 
   return newTodo;
 }
+
 export const todoRepository = {
   get,
   createByContent,

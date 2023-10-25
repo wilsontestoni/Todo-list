@@ -2,31 +2,31 @@ import React from "react";
 import { GlobalStyles } from "@ui/theme/GlobalStyles";
 import { todoController } from "@ui/controller/todo";
 
-const bg = "https://mariosouto.com/cursos/crudcomqualidade/bg";
+// const bg = "https://mariosouto.com/cursos/crudcomqualidade/bg";
+const bg = "/bg.jpeg"; // inside public folder
 
 interface HomeTodo {
   id: string;
   content: string;
 }
 
-export default function Page() {
-  // const [initialLoadComplete, setInitialLoadComplete] = React.useState(false);
+function HomePage() {
   const initialLoadComplete = React.useRef(false);
+  const [newTodoContent, setNewTodoContent] = React.useState("");
   const [totalPages, setTotalPages] = React.useState(0);
   const [page, setPage] = React.useState(1);
   const [search, setSearch] = React.useState("");
   const [isLoading, setIsLoading] = React.useState(true);
   const [todos, setTodos] = React.useState<HomeTodo[]>([]);
-  const [newTodoContent, setNewTodoContent] = React.useState("");
   const homeTodos = todoController.filterTodosByContent<HomeTodo>(
     search,
     todos
   );
-  const hasNoTodos = homeTodos.length === 0 && !isLoading;
+
   const hasMorePages = totalPages > page;
+  const hasNoTodos = homeTodos.length === 0 && !isLoading;
 
   React.useEffect(() => {
-    // setInitialLoadComplete(true);
     if (!initialLoadComplete.current) {
       todoController
         .get({ page })
@@ -43,7 +43,7 @@ export default function Page() {
 
   return (
     <main>
-      <GlobalStyles themeName="coolGrey" />
+      <GlobalStyles themeName="devsoutinho" />
       <header
         style={{
           backgroundImage: `url('${bg}')`,
@@ -57,14 +57,19 @@ export default function Page() {
             event.preventDefault();
             todoController.create({
               content: newTodoContent,
-              onSucess: (todo: HomeTodo) => {
+              // .then
+              onSuccess(todo: HomeTodo) {
                 setTodos((oldTodos) => {
                   return [todo, ...oldTodos];
                 });
                 setNewTodoContent("");
               },
-              onError: () => {
-                alert("Você precisa ter um conteudo para criar uma TODO");
+              // .catch
+              onError(customMessage) {
+                alert(
+                  customMessage ||
+                    "Você precisa ter um conteúdo para criar uma TODO!"
+                );
               },
             });
           }}
@@ -88,7 +93,8 @@ export default function Page() {
           <input
             type="text"
             placeholder="Filtrar lista atual, ex: Dentista"
-            onChange={(event) => {
+            value={search}
+            onChange={function handleSearch(event) {
               setSearch(event.target.value);
             }}
           />
@@ -146,7 +152,6 @@ export default function Page() {
                     onClick={() => {
                       setIsLoading(true);
                       const nextPage = page + 1;
-
                       setPage(nextPage);
 
                       todoController
@@ -162,7 +167,7 @@ export default function Page() {
                         });
                     }}
                   >
-                    Página {page} Carregar mais{" "}
+                    Página {page}, Carregar mais{" "}
                     <span
                       style={{
                         display: "inline-block",
@@ -182,3 +187,5 @@ export default function Page() {
     </main>
   );
 }
+
+export default HomePage;

@@ -1,6 +1,6 @@
-import { todoRepository } from "@server/repository/todo";
-import { z as schema } from "zod";
 import { NextApiRequest, NextApiResponse } from "next";
+import { z as schema } from "zod";
+import { todoRepository } from "@server/repository/todo";
 
 async function get(req: NextApiRequest, res: NextApiResponse) {
   const query = req.query;
@@ -40,7 +40,7 @@ const TodoCreateBodySchema = schema.object({
   content: schema.string(),
 });
 async function create(req: NextApiRequest, res: NextApiResponse) {
-  // Fail fast validation
+  // Fail Fast Validations
   const body = TodoCreateBodySchema.safeParse(req.body);
   // Type Narrowing
   if (!body.success) {
@@ -52,11 +52,12 @@ async function create(req: NextApiRequest, res: NextApiResponse) {
     });
     return;
   }
-  // Deve retornar um erro caso não tenha content.
-
+  // Here we have the data!
   const createdTodo = await todoRepository.createByContent(body.data.content);
 
-  return res.status(201).json(createdTodo);
+  res.status(201).json({
+    todo: createdTodo,
+  });
 }
 
 export const todoController = {
