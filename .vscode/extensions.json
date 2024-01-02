@@ -2,6 +2,7 @@
   "recommendations": [
     "EditorConfig.EditorConfig",
     "dbaeumer.vscode-eslint",
-    "wallabyjs.quokka-vscode"
+    "wallabyjs.quokka-vscode",
+    "github.vscode-github-actions"
   ]
 }
