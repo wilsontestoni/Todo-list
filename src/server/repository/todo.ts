@@ -5,6 +5,18 @@ import {
   deleteById as dbDeleteById,
 } from "@db-crud-todo";
 import { HttpNotFound } from "@server/infra/erros";
+import { Todo, TodoSchema } from "@server/schema/todo";
+
+// ===============================
+
+import { createClient } from "@supabase/supabase-js";
+
+const supabaseUrl = process.env.SUPABASE_URL || "";
+const supabaseKey = process.env.SUPABASE_SECRET_KEY || "";
+
+const supabase = createClient(supabaseUrl, supabaseKey);
+
+// ===============================
 
 interface TodoRepositoryGetParams {
   page?: number;
@@ -15,24 +27,51 @@ interface TodoRepositoryGetOutput {
   total: number;
   pages: number;
 }
-function get({
+async function get({
   page,
   limit,
-}: TodoRepositoryGetParams = {}): TodoRepositoryGetOutput {
+}: TodoRepositoryGetParams = {}): Promise<TodoRepositoryGetOutput> {
   const currentPage = page || 1;
   const currentLimit = limit || 10;
-  const ALL_TODOS = read().reverse();
-
   const startIndex = (currentPage - 1) * currentLimit;
-  const endIndex = currentPage * currentLimit;
-  const paginatedTodos = ALL_TODOS.slice(startIndex, endIndex);
-  const totalPages = Math.ceil(ALL_TODOS.length / currentLimit);
+  const endIndex = currentPage * currentLimit - 1;
+
+  const { data, error, count } = await supabase
+    .from("todos")
+    .select("*", {
+      count: "exact",
+    })
+    .range(startIndex, endIndex);
+
+  if (error) throw new Error("Failed to fetch data");
+
+  const parsedData = TodoSchema.array().safeParse(data);
+
+  if (!parsedData.success) {
+    // throw parsedData.error;
+    throw new Error("Failed to parse TODO from database");
+  }
+
+  const todos = parsedData.data;
+  const total = count || todos.length;
+  const totalPages = Math.ceil(total / currentLimit);
 
   return {
-    total: ALL_TODOS.length,
-    todos: paginatedTodos,
+    todos,
+    total,
     pages: totalPages,
   };
+
+  // const ALL_TODOS = read().reverse();
+
+  // const paginatedTodos = ALL_TODOS.slice(startIndex, endIndex);
+  // const totalPages = Math.ceil(ALL_TODOS.length / currentLimit);
+
+  // return {
+  //   total: ALL_TODOS.length,
+  //   todos: paginatedTodos,
+  //   pages: totalPages,
+  // };
 }
 
 async function createByContent(content: string): Promise<Todo> {
@@ -71,11 +110,3 @@ export const todoRepository = {
   toggleDone,
   deleteById,
 };
-
-// Model/Schema
-interface Todo {
-  id: string;
-  content: string;
-  date: string;
-  done: boolean;
-}
