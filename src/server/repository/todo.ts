@@ -1,9 +1,3 @@
-import {
-  read,
-  create,
-  update,
-  deleteById as dbDeleteById,
-} from "@db-crud-todo";
 import { HttpNotFound } from "@server/infra/erros";
 import { Todo, TodoSchema } from "@server/schema/todo";
 import { supabase } from "@server/infra/db/supabase";
