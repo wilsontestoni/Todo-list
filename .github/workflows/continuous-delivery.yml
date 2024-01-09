@@ -8,6 +8,10 @@ on:
   pull_request:
     types: [opened, synchronize]
 
+env:
+  VERCEL_ORG_ID: team_Ui5PS6liI2dsZOVD4t8wjOnR
+  VERCEL_PROJECT_ID: prj_mhG5ou7pv7oS5hxTjen8n8qw0p2N
+
 jobs:
   deploy: 
     runs-on: ubuntu-latest
