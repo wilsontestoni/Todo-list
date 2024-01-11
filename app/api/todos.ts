@@ -1,6 +1,11 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { todoController } from "@server/controller/todo";
 
+export default function GET(request: Request) {
+  const response = await todoController.get(request, response);
+  return Response.json({ response });
+}
+
 export default async function handler(
   request: NextApiRequest,
   response: NextApiResponse

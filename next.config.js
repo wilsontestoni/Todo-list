@@ -4,6 +4,9 @@
 const nextConfig = {
   /* config options here */
   reactStrictMode: true,
+  experimental: {
+    appDir: true,
+  },
 };
 
 module.exports = nextConfig;
