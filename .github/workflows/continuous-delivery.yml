@@ -1,8 +1,16 @@
 name: "[CD] Continuous Delivery"
 
+## on:
+#   push:
+#     branches: [ main ]
+
 on:
-  push:
-    branches: [ main ]
+  pull_request:
+    types: [opened, synchronize]
+
+env:
+  VERCEL_ORG_ID: team_Ui5PS6liI2dsZOVD4t8wjOnR
+  VERCEL_PROJECT_ID: prj_mhG5ou7pv7oS5hxTjen8n8qw0p2N
 
 jobs:
   deploy: 
@@ -17,4 +25,4 @@ jobs:
       - name: "Install Dependencies"
         run: "npm install"
       - name: "Deploy"
-        run: "npx vercel --prod"
+        run: "npx vercel --prod --token=${{ secrets.VERCEL_TOKEN }}"
