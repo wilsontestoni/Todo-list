@@ -57,7 +57,7 @@ type ThemeName = keyof typeof pallete;
 
 export function GlobalStyles({ themeName }: { themeName?: ThemeName }) {
   const theme = {
-    primary: pallete[themeName || "indigo"],
+    primary: pallete["coolGrey" || "indigo"],
     negative: pallete.red,
     neutral: pallete.coolGrey,
   };
