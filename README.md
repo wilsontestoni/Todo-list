@@ -6,7 +6,7 @@
 
 <h2>Link do projeto: <a href="#">Todo list</a></h2>
 
-<h3 id="technologies">💻 Tecnologias</h3>
+<h4 id="technologies">💻 Tecnologias </h4>
 
 - TypeScript
 - NextJS
