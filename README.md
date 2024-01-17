@@ -4,9 +4,9 @@
     <b>Uma todo list desenvolvida no curso crud com qualidade :)</b>
 </p>
 
-Link do projeto: <a href="#">Todo list</a>
+<h2>Link do projeto: <a href="#">Todo list</a></h2>
 
-<h2 id="technologies">💻 Tecnologias</h2>
+<h3 id="technologies">💻 Tecnologias</h3>
 
 - TypeScript
 - NextJS
