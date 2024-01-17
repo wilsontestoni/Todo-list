@@ -4,7 +4,7 @@
     <b>Este é um projeto de uma lista de tarefas desenvolvida como parte do curso "CRUD com Qualidade". A aplicação oferece funcionalidades essenciais de gerenciamento de tarefas, proporcionando uma experiência prática no desenvolvimento de operações CRUD (Create, Read, Update, Delete) com ênfase na qualidade do código.</b>
 </p>
 
-Link do projeto: <a href="#">Todo list</a>
+<strong>Link do projeto</strong>: <a href="#">Todo list</a>
 
 <strong id="technologies">💻 Tecnologias </strong>
 
