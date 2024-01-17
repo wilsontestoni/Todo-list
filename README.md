@@ -1,4 +1,4 @@
-<h1 style="text-align: center" style="font-weight: bold;">To do List 📝</h1>
+<h1 align="center" style="font-weight: bold;">To do List 📝</h1>
 
 <p>
     <b>Este é um projeto de uma lista de tarefas desenvolvida no curso "CRUD com Qualidade". A aplicação oferece funcionalidades essenciais de gerenciamento de tarefas, proporcionando uma experiência prática no desenvolvimento de operações CRUD (Create, Read, Update, Delete) com ênfase na qualidade do código.</b>
