@@ -4,9 +4,9 @@
     <b>Este é um projeto de uma lista de tarefas desenvolvida como parte do curso "CRUD com Qualidade". A aplicação oferece funcionalidades essenciais de gerenciamento de tarefas, proporcionando uma experiência prática no desenvolvimento de operações CRUD (Create, Read, Update, Delete) com ênfase na qualidade do código.</b>
 </p>
 
-<h2>Link do projeto: <a href="#">Todo list</a></h2>
+<strong>Link do projeto: <a href="#">Todo list</a></strong>
 
-<h4 id="technologies">💻 Tecnologias </h4>
+<strong id="technologies">💻 Tecnologias </strong>
 
 - TypeScript
 - NextJS
