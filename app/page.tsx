@@ -5,7 +5,7 @@ import { GlobalStyles } from "@ui/theme/GlobalStyles";
 import { todoController } from "@ui/controller/todo";
 
 // const bg = "https://mariosouto.com/cursos/crudcomqualidade/bg";
-const bg = "/bg.jpeg"; // inside public folder
+const bg = "/bg2.jpg"; // inside public folder
 
 interface HomeTodo {
   id: string;
